@@ -1,227 +1,54 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <title>
-        
-            Hello World
-        
-    </title>
-    <link rel="icon" href="/img/favicon.png"/>
-    
-<link rel="stylesheet" href="/css/style.css">
+extends base
 
-    
-<link rel="stylesheet" href="/css/font-awesome.min.css">
+block title
+  title= page.title + ' | ' + config.title
 
-    
-<link rel="stylesheet" href="/css/gitment.css">
+block content
+  .post
+    h1.post-title= page.title
+    .post-meta= page.date.format(config.date_format)
+      if page.categories.length > 0
+        span= ' | '
+        span.category
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= category.name
+      if theme.busuanzi == true
+        script(src='https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js', async)
+        span#busuanzi_container_page_pv= ' | '
+          span#busuanzi_value_page_pv
+          span= ' ' + __('Hits')
+      if theme.wordcount == true
+        include _partial/wordcount.pug
+    if theme.disqus
+      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
+    if theme.changyan
+      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
+        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
+        span= ' ' + __('Comment')
+      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
+    if theme.valine.enable
+      a.disqus-comment-count( href=url_for(page.path) + '#vcomment')
+        span.valine-comment-count(data-xid=url_for(page.path))
+        span= ' ' + __('Comment')
+    if page.toc
+      div(class='clear')
+        div(id='toc' class='toc-article')
+          div(class='toc-title')= __('contents')
+          != toc(page.content, {list_number: theme.toc_number})
+    .post-content
+      != page.content
+    if theme.donate.enable == true && page.donate != false
+      include _widget/donate.pug
 
-    
-<link rel="stylesheet" href="/css/hljs.min.css">
+    if theme.post_copyright.enable == true && page.copyright != false
+      include _widget/copyright.pug
 
-    
-<script src="/js/hljs.min.js"></script>
-  
-    
-<script src="/js/gitment.browser.js"></script>
-  
-<meta name="generator" content="Hexo 5.2.0"></head>
-<body>
-    <header class="header" id="header">
-    <h1>
-        <a class="title" href="/">
-            Fly Gaint
-        </a>
-    </h1>
-    <h2>
-        <a class="motto">
-            巨大的身体需要飞行要先做什么
-        </a>
-    </h2>
-    <nav class="navbar">
-        <ul class="menu">
-            
-            
-                <li class="menu-item">
-                    <a href="/" class="menu-item-link">
-                        主页
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/archives/" class="menu-item-link">
-                        归档
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/about/" class="menu-item-link">
-                        关于
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/atom.xml" class="menu-item-link">
-                        RSS
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/true" class="menu-item-link">
-                        搜索
-                    </a>
-                </li>
-            
-                
-                
-        </ul>
-    </nav>
-</header>
-    <main class="main">
-        <article class="post">
-            <h1>
-                <a class="title" href="/2020/12/07/hello-world/"> 
-                    Hello World 
-                </a>
-            </h1>
-            <div class="meta">
-                <a class="date"> 
-                    <i class="fa fa-calendar" aria-hidden="true"></i>                    
-                    2020-12-07   
-                </a>
-                
-                
-                
-                    
-            </div>
-<div class="toc">
-  <ol class="toc-list"><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#Quick-Start"><span class="toc-list-text">Quick Start</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#Create-a-new-post"><span class="toc-list-text">Create a new post</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#Run-server"><span class="toc-list-text">Run server</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#Generate-static-files"><span class="toc-list-text">Generate static files</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#Deploy-to-remote-sites"><span class="toc-list-text">Deploy to remote sites</span></a></li></ol></li></ol>
-</div>
-            <div class="content">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    if theme.shareto == true
+      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
+      a.article-share-link(data-url=page.permalink, data-id=page._id, data-qrcode=qrcode(page.permalink))= __('shareto')
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+    include _partial/tag.pug
+    include _partial/post_nav.pug
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-            </div>
-          
-           
-            <div class="copyright">
-                <div class="name">
-                    <a>本文作者:</a>
-                    <a>Fly Gaint</a>
-                </div>
-                <div class="link">
-                    <a>本文链接:</a>
-                    <a class="permalink" href="http://example.com/2020/12/07/hello-world/">http://example.com/2020/12/07/hello-world/</a>
-                </div>
-                <div class="license">
-                    <a>版权声明:</a>
-                    <a>本博客所有文章除特别声明外，均采用许可协议 CC BY-NC-SA 3.0 CN。转载请注明出处！</a>
-                </div>
-            </div>
-            
-
-          
-
-
-</article>
-
-
-<div class="tip">
-<button class="tip-btn">
-    打赏
-</button>
-<div class="tip-img">
-<ul>
-    
-<li>
-    <img src="/img/qrcode.jpeg"></img>
-</li>
-
- 
-<li>
-    <img src="/img/wechat.jpeg"></img>
-</li>
-
-</ul>
-</div>
-</div>
-
-<div class="more">
-
-<div></div>
-
-</div>
-
-<div class="bdsharebuttonbox">
-<a href="#" class="bds_weixin fa fa-weixin" data-cmd="weixin" title="分享到微信" style="color:#1cbd8f">
-</a>
-<a href="#" class="bds_tsina fa fa-weibo" data-cmd="tsina" title="分享到新浪微博" style="color:#ff6363">
-</a>
-<a href="#" class="bds_twi fa fa-twitter" data-cmd="twi" title="分享到Twitter" style="color:#00A7EB">
-</a>
-<a href="#" class="bds_fbook fa fa-facebook" data-cmd="fbook" title="分享到Facebook" style="color:#00A7EB">
-</a>
-</div>
-<script>
-window._bd_share_config={
-    "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},
-    "share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='../../../../../static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
- 
-<div id="comments"></div>
-
-<script>
-    var gitment = new Gitment({
-    id: "Mon Dec 07 2020 11:31:32 GMT+0800",
-    owner: "ranyouli",
-    repo: "ranyouli.github.io",
-    oauth: {
-      client_id:"aa179b56a7ff70349a9c",
-      client_secret: "e0a067194596798837f9557e8f0c4a344b99f7d3",
-    }
-  })
-  gitment.render('comments')
-</script>
-    </main>
-    <a class="not-found">not found!</a>
-    <div class="search-items">
-    </div>
-    <a href="#header" id="top" style="display:none">
-        <i class="fa fa-sort-asc fa-2x"></i>
-    </a>
-    <footer class="footer">
-    <div class="footer-copyright">©️2017
-    <a href="//github.com/Vevlins/toki" class="link" target="_blank">Toki</a>  by Vevlins
-    </div>
-</footer>
-
-    
-<script src="/js/jquery.js"></script>
-
-    
-<script src="/js/toki.js"></script>
-  
-  <script>hljs.initHighlightingOnLoad();</script>
-</body>
-</html>
+    if page.comments
+      include _partial/comments.pug

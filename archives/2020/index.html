@@ -1,129 +1,24 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <title>
-        
-            Fly Gaint
-        
-    </title>
-    <link rel="icon" href="/img/favicon.png"/>
-    
-<link rel="stylesheet" href="/css/style.css">
+extends base
 
-    
-<link rel="stylesheet" href="/css/font-awesome.min.css">
-
-    
-<link rel="stylesheet" href="/css/gitment.css">
-
-    
-<link rel="stylesheet" href="/css/hljs.min.css">
-
-    
-<script src="/js/hljs.min.js"></script>
-  
-    
-<script src="/js/gitment.browser.js"></script>
-  
-<meta name="generator" content="Hexo 5.2.0"></head>
-<body>
-    <header class="header" id="header">
-    <h1>
-        <a class="title" href="/">
-            Fly Gaint
-        </a>
-    </h1>
-    <h2>
-        <a class="motto">
-            巨大的身体需要飞行要先做什么
-        </a>
-    </h2>
-    <nav class="navbar">
-        <ul class="menu">
-            
-            
-                <li class="menu-item">
-                    <a href="/" class="menu-item-link">
-                        主页
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/archives/" class="menu-item-link">
-                        归档
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/about/" class="menu-item-link">
-                        关于
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/atom.xml" class="menu-item-link">
-                        RSS
-                    </a>
-                </li>
-            
-                
-            
-                <li class="menu-item">
-                    <a href="/true" class="menu-item-link">
-                        搜索
-                    </a>
-                </li>
-            
-                
-                
-        </ul>
-    </nav>
-</header>
-    <main class="main">
-        <section class="archive">
-  <ul class="post-archive">
-    
-    
-    
-     <span class="year"> <a>2020</a></span>
-      
-    
-      <li class="post-item">
-        <span class="date">12-07</span>
-        <a class="title" href="/2020/12/07/hello-world/">Hello World</a>
-      </li>
-    
-  </ul>
-</section>
-
-
-    </main>
-    <a class="not-found">not found!</a>
-    <div class="search-items">
-    </div>
-    <a href="#header" id="top" style="display:none">
-        <i class="fa fa-sort-asc fa-2x"></i>
-    </a>
-    <footer class="footer">
-    <div class="footer-copyright">©️2017
-    <a href="//github.com/Vevlins/toki" class="link" target="_blank">Toki</a>  by Vevlins
-    </div>
-</footer>
-
-    
-<script src="/js/jquery.js"></script>
-
-    
-<script src="/js/toki.js"></script>
-  
-  <script>hljs.initHighlightingOnLoad();</script>
-</body>
-</html>
+block title
+  if page.category
+     title= page.category + ' | ' + config.title
+  if page.tag
+     title= page.tag + ' | ' + config.title
+  if page.archive
+     title= __('archive') + ' | ' + config.title
+block content
+  if page.category || page.tag
+      h1.label-title=  __('reading_label', page.category || page.tag)
+  .post
+    .post-archive
+        - var allposts = page.posts.toArray().reduce((r, v, i, a, k = -v.date.format('YYYY')) => ((r[k] || (r[k] = [])).push(v), r), {})
+        each posts, year in allposts
+          h2= -year
+          ul.listing
+            for post in posts
+              li
+                span.date= post.date.format(config.date_format)
+                a(href=url_for(post.path), title=post.title)
+                  +title(post)
+  include _partial/paginator.pug
